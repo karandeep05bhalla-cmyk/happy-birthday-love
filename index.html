@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday & 9 Years - For My Soulmate</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #FDFBF7; 
+            --text-main: #2C2A29; 
+            --accent: #B76E79; 
+            --accent-light: #e6c8cd;
+        }
+
+        body {
+            margin: 0; padding: 0; background-color: var(--bg-color); color: var(--text-main);
+            font-family: 'Lato', sans-serif; overflow-x: hidden; scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; font-weight: 400; }
+
+        /* --- Floating Hearts --- */
+        #heart-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; overflow: hidden; }
+        .heart { position: absolute; bottom: -5vh; color: rgba(183, 110, 121, 0.2); animation: floatUp linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.8); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-110vh) scale(1.2); opacity: 0; } }
+
+        /* --- Entrance Screen --- */
+        #entrance-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 1.5s ease; text-align: center; padding: 20px; }
+        #entrance-screen h1 { font-size: 3rem; margin-bottom: 10px; }
+        #entrance-screen h2 { font-size: 1.5rem; font-style: italic; color: var(--accent); margin-top: 0; margin-bottom: 40px; }
+        .btn { background: none; border: 1px solid var(--accent); color: var(--text-main); padding: 15px 40px; font-size: 1.2rem; font-family: 'Playfair Display', serif; cursor: pointer; border-radius: 50px; transition: all 0.4s ease; text-decoration: none; display: inline-block; }
+        .btn:hover { background-color: var(--accent); color: white; }
+
+        /* --- Music Controller --- */
+        #music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: white; border: 1px solid var(--accent); border-radius: 50px; padding: 10px 20px; cursor: pointer; display: none; font-family: 'Lato', sans-serif; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; color: var(--accent); font-weight: bold; }
+        #music-toggle:hover { background: var(--accent); color: white; }
+
+        /* --- Navigation Tabs --- */
+        #main-content { display: none; opacity: 0; position: relative; z-index: 10; transition: opacity 2s ease; }
+        nav { position: sticky; top: 0; background: rgba(253, 251, 247, 0.95); backdrop-filter: blur(10px); padding: 20px 0; border-bottom: 1px solid var(--accent-light); display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; z-index: 100; }
+        .tab-btn { background: none; border: none; font-size: 1rem; font-family: 'Playfair Display', serif; color: var(--text-main); cursor: pointer; padding: 5px 10px; position: relative; transition: color 0.3s ease; }
+        .tab-btn.active { color: var(--accent); font-weight: 600; }
+        .tab-btn.active::after { content: ''; position: absolute; width: 100%; height: 2px; bottom: 0; left: 0; background-color: var(--accent); }
+
+        .tab-content { display: none; padding: 60px 20px; max-width: 1100px; margin: 0 auto; animation: fadeIn 0.8s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Story Tab: Masonry Gallery --- */
+        .hero { text-align: center; margin-bottom: 50px; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; color: var(--accent); }
+        .letter { text-align: center; line-height: 2; font-size: 1.15rem; max-width: 800px; margin: 0 auto 60px auto; color: #444; }
+        
+        .gallery { column-count: 3; column-gap: 25px; width: 100%; margin: 0 auto; }
+        .gallery-item { break-inside: avoid; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.06); transition: transform 0.5s ease; background: white; }
+        .gallery-item:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(183, 110, 121, 0.2); }
+        .gallery img { width: 100%; height: auto; display: block; }
+
+        /* --- Growth Tab: Timeline & Graph --- */
+        .timeline { display: flex; justify-content: space-between; position: relative; margin: 80px 0; padding-top: 20px; }
+        .timeline::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent-light); }
+        .t-point { text-align: center; width: 20%; position: relative; }
+        .t-point::after { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
+        .t-point h4 { margin: 15px 0 5px 0; color: var(--accent); font-size: 1.4rem; }
+        .t-point p { font-size: 0.9rem; color: #666; }
+
+        .chart-container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 40px; text-align: center; }
+        
+        /* --- 9 Reasons Why: Envelope Cards --- */
+        .reasons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .flip-card { background-color: transparent; height: 220px; perspective: 1000px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; padding: 25px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .flip-card-front { background-color: white; border: 2px solid var(--accent-light); color: var(--accent); }
+        .flip-card-back { background-color: var(--accent); color: white; transform: rotateY(180deg); }
+
+        /* --- Welcome Home Tab: Countdown --- */
+        .countdown-wrapper { text-align: center; background: white; padding: 60px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.05); border: 1px solid var(--accent-light); }
+        .timer { display: flex; justify-content: center; gap: 20px; margin: 40px 0; }
+        .t-unit { background: var(--bg-color); padding: 20px; border-radius: 12px; min-width: 100px; border: 1px solid var(--accent-light); }
+        .t-unit span { display: block; font-size: 2.5rem; font-weight: bold; color: var(--accent); font-family: 'Playfair Display'; }
+        .t-unit label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+
+        /* --- Services & Reviews --- */
+        .coupons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .coupon { background: white; border: 2px dashed var(--accent); border-radius: 10px; padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .coupon h3 { color: var(--accent); margin-top: 0; }
+        .coupon p { color: #666; font-size: 1rem; line-height: 1.5; }
+        
+        .review-box { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); text-align: center; max-width: 600px; margin: 0 auto; }
+        textarea { width: 100%; height: 120px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; resize: none; box-sizing: border-box; font-family: inherit; }
+
+        @media (max-width: 768px) {
+            .gallery { column-count: 2; }
+            .timeline { flex-direction: column; gap: 40px; padding-top: 0; padding-left: 20px; }
+            .timeline::before { width: 2px; height: 100%; left: 0; top: 0; }
+            .t-point { width: 100%; text-align: left; }
+            .t-point::after { left: -6px; transform: none; }
+            .timer { gap: 10px; }
+            .t-unit { min-width: 70px; padding: 10px; }
+            .t-unit span { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop><source src="music/elvis.mp3" type="audio/mpeg"></audio>
+    <div id="heart-container"></div>
+    <button id="music-toggle" onclick="toggleMusic()">🎵 Play Music</button>
+
+    <div id="entrance-screen">
+        <h1 class="serif">To my soulmate...</h1>
+        <h2>Happy Birthday & 9 Strategic Years Together</h2>
+        <button class="btn" onclick="enterSite()">Unlock My Heart</button>
+    </div>
+
+    <div id="main-content">
+        <nav>
+            <button class="tab-btn active" onclick="showTab('story')">Our Story</button>
+            <button class="tab-btn" onclick="showTab('reasons')">9 Reasons Why</button>
+            <button class="tab-btn" onclick="showTab('growth')">Our Growth</button>
+            <button class="tab-btn" onclick="showTab('welcome')">Welcome Home</button>
+            <button class="tab-btn" onclick="showTab('services')">Services</button>
+            <button class="tab-btn" onclick="showTab('review')">Review</button>
+        </nav>
+
+        <div id="story" class="tab-content active">
+            <div class="hero">
+                <h1>Happy Birthday, My Love</h1>
+                <h2 class="serif">9 years down, a lifetime to go.</h2>
+            </div>
+            <div class="letter">
+                <p>To my everything,</p>
+                <p>Today is incredibly special because it's the day you were born, and it also marks 9 unforgettable years of us. You make my life so incredibly cheerful, and I count my lucky stars every single day that I have you by my side.</p>
+                <p>I absolutely love your sense of humor. Your silly jokes, your beautiful smile, and even your adorable rage-baiting—it's all so uniquely you, and I love every single bit of it. You are my favorite adventure, my deepest comfort, and my greatest joy.</p>
+                <p>I cannot wait to see what the future holds for us. Happy Birthday, and Happy Anniversary. I love you endlessly.</p>
+            </div>
+            <div class="gallery">
+                <div class="gallery-item"><img src="images/photo1.jpg"></div>
+                <div class="gallery-item"><img src="images/photo2.jpg"></div>
+                <div class="gallery-item"><img src="images/photo3.jpg"></div>
+                <div class="gallery-item"><img src="images/photo4.jpg"></div>
+                <div class="gallery-item"><img src="images/photo5.png"></div>
+                <div class="gallery-item"><img src="images/photo6.jpg"></div>
+                <div class="gallery-item"><img src="images/photo7.jpg"></div>
+                <div class="gallery-item"><img src="images/photo8.jpg"></div>
+                <div class="gallery-item"><img src="images/photo9.jpg"></div>
+                <div class="gallery-item"><img src="images/photo10.jpg"></div>
+                <div class="gallery-item"><img src="images/photo11.jpg"></div>
+                <div class="gallery-item"><img src="images/photo12.png"></div>
+                <div class="gallery-item"><img src="images/photo13.png"></div>
+                <div class="gallery-item"><img src="images/photo14.jpg"></div>
+            </div>
+        </div>
+
+        <div id="reasons" class="tab-content">
+            <div class="hero"><h1>9 Things I Love About You</h1><h2 class="serif">Tap to open each letter...</h2></div>
+            <div class="reasons-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#1</h3></div><div class="flip-card-back"><p>Your beautiful eyes I get lost in.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#2</h3></div><div class="flip-card-back"><p>Your gorgeous hair.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#3</h3></div><div class="flip-card-back"><p>Your cute mole.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#4</h3></div><div class="flip-card-back"><p>Your incredible smile.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#5</h3></div><div class="flip-card-back"><p>Your adorable rage-baiting.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#6</h3></div><div class="flip-card-back"><p>Your legendary goat voice.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#7</h3></div><div class="flip-card-back"><p>Your cute aggression.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#8</h3></div><div class="flip-card-back"><p>Your impeccable style.</p></div></div></div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')"><div class="flip-card-inner"><div class="flip-card-front"><h3>#9</h3></div><div class="flip-card-back"><p>Your love for everyone.</p></div></div></div>
+            </div>
+        </div>
+
+        <div id="growth" class="tab-content">
+            <div class="hero"><h1>Our Strategic Growth</h1><h2 class="serif">A visual audit of 9 years.</h2></div>
+            <div class="timeline">
+                <div class="t-point"><h4>2017</h4><p>Launch: The First Spark</p></div>
+                <div class="t-point"><h4>2020</h4><p>Resilience: Stronger Together</p></div>
+                <div class="t-point"><h4>2023</h4><p>Expansion: Deep Roots</p></div>
+                <div class="t-point"><h4>2026</h4><p>Peak Synergy: 9 Years</p></div>
+            </div>
+            <div class="chart-container">
+                <h3 class="serif">The Happiness Index</h3>
+                <svg viewBox="0 0 1000 300" style="width: 100%; height: auto;">
+                    <path d="M0 250 Q 250 200, 500 150 T 1000 50" fill="none" stroke="var(--accent)" stroke-width="4" />
+                    <text x="1000" y="40" text-anchor="end" fill="var(--accent)" font-weight="bold">Infinite Growth</text>
+                </svg>
+                <p><i>Fig 1.1: Visualizing the compound interest of laughs and shared love.</i></p>
+            </div>
+        </div>
+
+        <div id="welcome" class="tab-content">
+            <div class="hero"><h1>Countdown to Arrival</h1><h2 class="serif">Counting every second until you land.</h2></div>
+            <div class="countdown-wrapper">
+                <h3 class="serif">Your Flight Lands In:</h3>
+                <div class="timer">
+                    <div class="t-unit"><span id="days">00</span><label>Days</label></div>
+                    <div class="t-unit"><span id="hours">00</span><label>Hours</label></div>
+                    <div class="t-unit"><span id="mins">00</span><label>Mins</label></div>
+                    <div class="t-unit"><span id="secs">00</span><label>Secs</label></div>
+                </div>
+                <p>Target Date: <b>June 13, 2026</b></p>
+            </div>
+        </div>
+
+        <div id="services" class="tab-content">
+            <div class="hero"><h1>Exclusive Services</h1><h2 class="serif">Coupons for the Birthday Girl.</h2></div>
+            <div class="coupons-grid">
+                <div class="coupon"><h3>1-Hour Back Massage</h3><p>Redeemable anytime stress levels are high.</p></div>
+                <div class="coupon"><h3>Romantic Dinner Date</h3><p>At any aesthetic restaurant of your choice.</p></div>
+                <div class="coupon"><h3>Unlimited Photographer</h3><p>I will take photos until we get the perfect shot.</p></div>
+                <div class="coupon"><h3>Win Any Argument</h3><p>Present this card to instantly win any silly argument or debate we are having, no questions asked.</p></div>
+                <div class="coupon"><h3>Cuddle & Movie Night</h3><p>Your choice of movie, your favorite snacks, and premium cuddling services from yours truly.</p></div>
+            </div>
+        </div>
+
+        <div id="review" class="tab-content">
+            <div class="hero"><h1>Relationship Review</h1><h2 class="serif">How am I doing?</h2></div>
+            <div class="review-box">
+                <h2 class="serif">Rate Your Boyfriend</h2>
+                <div style="font-size: 2rem; color: gold; margin-bottom: 20px;">★★★★★</div>
+                <textarea placeholder="Write your review here... where do you want to go for our vacation?"></textarea>
+                <button class="btn" onclick="alert('5-Star Review Received! Love you!')">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateCountdown() {
+            const target = new Date("June 13, 2026 00:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+            }
+        }
+        setInterval(updateCountdown, 1000);
+
+        let playing = false;
+        const music = document.getElementById("bg-music");
+        const btn = document.getElementById("music-toggle");
+        function toggleMusic() {
+            if (playing) { music.pause(); btn.innerText = "🎵 Play Music"; }
+            else { music.play(); btn.innerText = "⏸ Pause Music"; }
+            playing = !playing;
+        }
+
+        function enterSite() {
+            music.play(); playing = true; btn.innerText = "⏸ Pause Music";
+            document.getElementById("entrance-screen").style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById("entrance-screen").style.display = 'none';
+                document.getElementById("main-content").style.display = 'block';
+                document.getElementById("music-toggle").style.display = 'block';
+                createHearts();
+                setTimeout(() => { document.getElementById("main-content").style.opacity = '1'; }, 50);
+            }, 1000);
+        }
+
+        function createHearts() {
+            const c = document.getElementById('heart-container');
+            for (let i = 0; i < 30; i++) {
+                let h = document.createElement('div');
+                h.innerHTML = '&#10084;'; h.classList.add('heart');
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                h.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                c.appendChild(h);
+            }
+        }
+    </script>
+</body>
+</html>
